@@ -1,0 +1,35 @@
+meta {
+  name: 05 - Ajouter Notes Mecanicien
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{base_url}}/api/admin/rendezvous/{{rendezvous_id}}/notes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "notes_mecanicien": "Vérifier l'usure des pneus et les freins"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Notes ajoutées");
+  });
+  
+  test("Should have notes", function() {
+    expect(res.body.data.notes_mecanicien).to.exist;
+  });
+}

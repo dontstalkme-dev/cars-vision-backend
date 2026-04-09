@@ -1,0 +1,40 @@
+meta {
+  name: 01 - Laisser Avis
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/reviews/{{produit_id}}/reviews
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "note": 5,
+    "commentaire": "Excellent produit, très satisfait de mon achat!"
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201));
+  });
+  
+  test("Message should indicate pending moderation", function() {
+    expect(res.body.message).to.include("En attente de modération");
+  });
+  
+  test("Avis should have PENDING status", function() {
+    expect(res.body.avis.statut).to.equal("PENDING");
+  });
+  
+  test("Save avis_id", function() {
+    bru.setEnvVar("avis_id", res.body.avis.id);
+  });
+}

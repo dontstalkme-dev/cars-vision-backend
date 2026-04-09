@@ -1,0 +1,33 @@
+meta {
+  name: 02 - Modifier Categorie
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{base_url}}/api/admin/categories/{{categorie_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "nom": "Accessoires Automobile",
+    "description": "Description mise à jour",
+    "est_actif": true
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return updated category", function() {
+    expect(res.body.message).to.include("modifiée");
+  });
+}

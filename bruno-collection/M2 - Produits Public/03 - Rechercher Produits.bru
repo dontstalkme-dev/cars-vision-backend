@@ -1,0 +1,52 @@
+meta {
+  name: 03 - Rechercher Produits
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/api/products/search?q=filtre&page=1&limite=20
+  body: none
+  auth: none
+}
+
+params:query {
+  q: filtre
+  page: 1
+  limite: 20
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return search results", function() {
+    expect(res.body.resultats).to.be.an("array");
+  });
+  
+  test("Should return search query", function() {
+    expect(res.body.recherche).to.equal("filtre");
+  });
+  
+  test("Should return pagination", function() {
+    expect(res.body.pagination).to.be.an("object");
+  });
+}
+
+docs {
+  # Rechercher des produits (Public)
+  
+  Paramètres:
+  - q: terme de recherche (minimum 2 caractères)
+  - page: numéro de page
+  - limite: nombre de résultats par page
+  
+  La recherche s'effectue dans:
+  - Le nom du produit
+  - La description du produit
+  
+  Les résultats sont triés par:
+  1. Popularité (nombre de ventes)
+  2. Date de création (récent d'abord)
+}

@@ -1,0 +1,32 @@
+meta {
+  name: 02 - Modifier Parametre
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{base_url}}/api/admin/parametres/frais_livraison
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "valeur": "6000",
+    "description": "Frais de livraison mis à jour"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Paramètre modifié");
+  });
+}

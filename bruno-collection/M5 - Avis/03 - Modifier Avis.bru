@@ -1,0 +1,36 @@
+meta {
+  name: 03 - Modifier Avis
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/api/reviews/reviews/{{avis_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "note": 4,
+    "commentaire": "Bon produit, mais un peu cher"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should indicate pending moderation", function() {
+    expect(res.body.message).to.include("En attente de modération");
+  });
+  
+  test("Avis should be back to PENDING", function() {
+    expect(res.body.avis.statut).to.equal("PENDING");
+  });
+}

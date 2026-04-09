@@ -1,0 +1,21 @@
+meta {
+  name: 01 - Health Check
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/health
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Database should be connected", function() {
+    expect(res.body.database).to.equal("Connected");
+  });
+}

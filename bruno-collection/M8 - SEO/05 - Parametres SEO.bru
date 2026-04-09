@@ -1,0 +1,25 @@
+meta {
+  name: 05 - Parametres SEO
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/api/seo/parameters
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be correct", function() {
+    expect(res.body.message).to.equal("Paramètres SEO");
+  });
+  
+  test("Should have data", function() {
+    expect(res.body.data).to.exist;
+  });
+}

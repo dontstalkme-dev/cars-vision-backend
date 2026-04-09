@@ -1,0 +1,48 @@
+meta {
+  name: 05 - Liste Tous Produits
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/api/admin/products?page=1&limite=20
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+params:query {
+  page: 1
+  limite: 20
+  ~est_actif: true
+  ~categorie_id: {{categorie_id}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return products array", function() {
+    expect(res.body.produits).to.be.an("array");
+  });
+  
+  test("Should include inactive products", function() {
+    // Admin peut voir tous les produits
+    expect(res.body.pagination.total).to.be.a("number");
+  });
+}
+
+docs {
+  # Liste tous les produits (Admin)
+  
+  Contrairement à la route publique, cette route retourne
+  TOUS les produits, y compris les inactifs.
+  
+  Filtres disponibles:
+  - est_actif: true | false
+  - categorie_id: UUID
+}

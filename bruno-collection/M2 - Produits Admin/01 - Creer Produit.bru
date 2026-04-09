@@ -1,0 +1,56 @@
+meta {
+  name: 01 - Creer Produit
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/admin/products
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "nom": "Filtre à huile hondai Corolla",
+    "description": "Filtre à huile compatible Toyota Corolla 2015-2020. Haute qualité, garantie constructeur.",
+    "prix": 8500,
+    "stock": 50,  
+    "categorie_id": "{{categorie_id}}"
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201);
+  });
+  
+  test("Should return created product", function() {
+    expect(res.body.produit.nom).to.include("Filtre");
+  });
+  
+  test("Product should be inactive by default", function() {
+    expect(res.body.produit.est_actif).to.equal(false);
+  });
+  
+  test("Save product ID to environment", function() {
+    bru.setEnvVar("produit_id", res.body.produit.id);
+  });
+}
+
+docs {
+  # Créer un produit (Admin)
+  
+  Champs obligatoires:
+  - nom
+  - prix (en FCFA)
+  - stock
+  - categorie_id
+  
+  Le produit est créé inactif par défaut (est_actif: false).
+  Il faut l'activer pour qu'il apparaisse dans le catalogue public.
+}

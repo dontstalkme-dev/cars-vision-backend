@@ -1,0 +1,24 @@
+meta {
+  name: 03 - Metadata Article
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/api/seo/metadata/article/article-slug
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status should be 200 or 404", function() {
+    expect([200, 404]).to.include(res.status);
+  });
+  
+  test("If found, should have metadata", function() {
+    if (res.status === 200) {
+      expect(res.body.data.title).to.exist;
+      expect(res.body.data.description).to.exist;
+    }
+  });
+}

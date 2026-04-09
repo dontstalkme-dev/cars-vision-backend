@@ -1,0 +1,25 @@
+meta {
+  name: 04 - Supprimer Avis
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{base_url}}/api/reviews/reviews/{{avis_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.include("Avis supprimé");
+  });
+}

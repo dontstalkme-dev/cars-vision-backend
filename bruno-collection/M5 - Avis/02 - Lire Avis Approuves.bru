@@ -1,0 +1,31 @@
+meta {
+  name: 02 - Lire Avis Approuves
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/reviews/{{produit_id}}/reviews?page=1&limite=10&tri=recent
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should have avis array", function() {
+    expect(res.body.avis).to.be.an('array');
+  });
+  
+  test("Should have pagination", function() {
+    expect(res.body.pagination).to.exist;
+  });
+  
+  test("All avis should be APPROVED", function() {
+    res.body.avis.forEach(function(avis) {
+      expect(avis.statut).to.equal("APPROVED");
+    });
+  });
+}

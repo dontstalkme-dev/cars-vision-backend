@@ -1,0 +1,31 @@
+meta {
+  name: 03 - Supprimer Categorie
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{base_url}}/api/admin/categories/{{categorie_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+tests {
+  test("Status should be 200 or 400", function() {
+    expect([200, 400]).to.include(res.status);
+  });
+}
+
+docs {
+  # Supprimer une catégorie (Admin)
+  
+  La suppression échoue si:
+  - La catégorie contient des produits
+  - La catégorie a des sous-catégories
+  
+  Dans ces cas, désactivez plutôt la catégorie.
+}

@@ -1,0 +1,36 @@
+meta {
+  name: 01 - Voir Creneaux Disponibles
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/appointments/slots?date=2026-03-20
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should have date", function() {
+    expect(res.body.date).to.exist;
+  });
+  
+  test("Should have creneaux array", function() {
+    expect(res.body.creneaux).to.be.an('array');
+  });
+  
+  test("Each creneau should have heure_debut and heure_fin", function() {
+    if (res.body.creneaux.length > 0) {
+      expect(res.body.creneaux[0].heure_debut).to.exist;
+      expect(res.body.creneaux[0].heure_fin).to.exist;
+    }
+  });
+}

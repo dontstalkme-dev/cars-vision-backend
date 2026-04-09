@@ -1,0 +1,37 @@
+meta {
+  name: 02 - Details Commande
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/admin/commandes/{{commande_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+vars:pre-request {
+  commande_id: 1
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be correct", function() {
+    expect(res.body.message).to.equal("Détails commande");
+  });
+  
+  test("Should have commande data", function() {
+    expect(res.body.data).to.exist;
+  });
+  
+  test("Should have articles", function() {
+    expect(res.body.data.articles).to.be.an('array');
+  });
+}

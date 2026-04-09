@@ -1,0 +1,29 @@
+meta {
+  name: 05 - Lister Tous Rendezvous Admin
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/api/appointments?page=1&limite=20
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should have rdvs array", function() {
+    expect(res.body.rdvs).to.be.an('array');
+  });
+  
+  test("Should have pagination", function() {
+    expect(res.body.pagination).to.exist;
+  });
+}

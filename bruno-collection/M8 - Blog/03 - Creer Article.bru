@@ -1,0 +1,43 @@
+meta {
+  name: 03 - Creer Article
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/blog/admin/create
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "titre": "Comment entretenir votre moteur",
+    "contenu": "Contenu complet de l'article sur l'entretien du moteur...",
+    "categorie": "maintenance",
+    "meta_description": "Guide complet pour l'entretien de votre moteur",
+    "meta_keywords": "moteur, entretien, maintenance"
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Article créé");
+  });
+  
+  test("Should have slug", function() {
+    expect(res.body.data.slug).to.exist;
+  });
+  
+  test("Should not be published", function() {
+    expect(res.body.data.est_publie).to.equal(false);
+  });
+}

@@ -1,0 +1,32 @@
+meta {
+  name: 03 - Changer Mot de Passe
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/api/users/me/password
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "ancien_mot_de_passe": "Client@2026",
+    "nouveau_mot_de_passe": "NewClient@2026"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return success message", function() {
+    expect(res.body.message).to.include("Mot de passe modifié");
+  });
+}

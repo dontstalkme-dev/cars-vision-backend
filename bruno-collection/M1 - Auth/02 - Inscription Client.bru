@@ -1,0 +1,41 @@
+meta {
+  name: 02 - Inscription Client
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "client.test@carsvisionautoes.cm",
+    "mot_de_passe": "Clien",
+    "prenom": "Jean",
+    "nom": "Dupont",
+    "telephone": "+237600000001"
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201);
+  });
+  
+  test("Should return access token", function() {
+    expect(res.body.accessToken).to.be.a("string");
+  });
+  
+  test("Role should be client", function() {
+    expect(res.body.utilisateur.role).to.equal("client");
+  });
+  
+  test("Save tokens to environment", function() {
+    bru.setEnvVar("access_token", res.body.accessToken);
+    bru.setEnvVar("refresh_token", res.body.refreshToken);
+    bru.setEnvVar("user_id", res.body.utilisateur.id);
+  });
+}

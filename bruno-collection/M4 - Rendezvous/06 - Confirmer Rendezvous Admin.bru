@@ -1,0 +1,36 @@
+meta {
+  name: 06 - Confirmer Rendezvous Admin
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{base_url}}/api/appointments/{{rendezvous_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "statut": "CONFIRME",
+    "notes_mecanicien": "RDV confirmé pour demain à 9h"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.include("Rendez-vous mis à jour");
+  });
+  
+  test("Statut should be CONFIRME", function() {
+    expect(res.body.rdv.statut).to.equal("CONFIRME");
+  });
+}

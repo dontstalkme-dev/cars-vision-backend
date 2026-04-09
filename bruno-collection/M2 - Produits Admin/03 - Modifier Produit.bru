@@ -1,0 +1,43 @@
+meta {
+  name: 03 - Modifier Produit
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/api/admin/products/{{produit_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "nom": "Filtre à huile Toyota Corolla Premium",
+    "prix": 9500,
+    "stock": 45,
+    "est_actif": true
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return updated product", function() {
+    expect(res.body.message).to.include("modifié");
+  });
+}
+
+docs {
+  # Modifier un produit (Admin)
+  
+  Tous les champs sont optionnels (modification partielle).
+  
+  Pour activer un produit et le rendre visible dans le catalogue:
+  { "est_actif": true }
+}

@@ -1,0 +1,35 @@
+meta {
+  name: 03 - Modifier Statut Commande
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/api/admin/commandes/{{commande_id}}/statut
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "statut": "EXPEDIEE"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Statut commande modifié");
+  });
+  
+  test("Should have nouveau_statut", function() {
+    expect(res.body.data.nouveau_statut).to.equal("EXPEDIEE");
+  });
+}

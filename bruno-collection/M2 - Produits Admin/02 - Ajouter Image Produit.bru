@@ -1,0 +1,45 @@
+meta {
+  name: 02 - Ajouter Image Produit
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/admin/products/{{produit_id}}/images
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "url": "https://example.com/filtre-huile-toyota.jpg",
+    "est_principale": true
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201);
+  });
+  
+  test("Should return created image", function() {
+    expect(res.body.image.url).to.be.a("string");
+  });
+}
+
+docs {
+  # Ajouter une image à un produit (Admin)
+  
+  Limitations:
+  - Maximum 6 images par produit
+  - Formats acceptés: JPG, PNG, WebP (max 5Mo)
+  
+  Si est_principale = true, les autres images sont automatiquement
+  mises à est_principale = false.
+  
+  La première image ajoutée devient automatiquement principale.
+}

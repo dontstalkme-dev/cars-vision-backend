@@ -1,0 +1,50 @@
+meta {
+  name: 02 - Reserver Rendezvous
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/appointments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "service_nom": "Révision complète",
+    "date_rdv": "2026-03-20",
+    "heure_debut": "09:00",
+    "marque_vehicule": "Toyota",
+    "modele_vehicule": "Corolla",
+    "annee_vehicule": 2020,
+    "plaque_vehicule": "CM-1234-AB",
+    "notes_client": "Vérifier les freins"
+  }
+}
+
+tests {
+  test("Status should be 201", function() {
+    expect(res.status).to.equal(201);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.include("Rendez-vous réservé");
+  });
+  
+  test("Should have rdv data", function() {
+    expect(res.body.rdv).to.exist;
+  });
+  
+  test("Statut should be EN_ATTENTE", function() {
+    expect(res.body.rdv.statut).to.equal("EN_ATTENTE");
+  });
+  
+  test("Save rendezvous_id", function() {
+    bru.setEnvVar("rendezvous_id", res.body.rdv.id);
+  });
+}

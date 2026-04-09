@@ -1,0 +1,33 @@
+meta {
+  name: 01 - Lister Rendezvous
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/api/admin/rendezvous?page=1&limit=20
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be correct", function() {
+    expect(res.body.message).to.equal("Liste des rendez-vous");
+  });
+  
+  test("Should have pagination", function() {
+    expect(res.body.pagination).to.exist;
+  });
+  
+  test("Data should be array", function() {
+    expect(res.body.data).to.be.an('array');
+  });
+}

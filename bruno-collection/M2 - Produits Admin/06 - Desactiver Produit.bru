@@ -1,0 +1,37 @@
+meta {
+  name: 06 - Desactiver Produit
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{base_url}}/api/admin/products/{{produit_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should confirm deactivation", function() {
+    expect(res.body.message).to.include("désactivé");
+  });
+}
+
+docs {
+  # Désactiver un produit (Admin)
+  
+  La désactivation est préférée à la suppression pour:
+  - Conserver l'historique des commandes
+  - Garder les statistiques
+  - Pouvoir réactiver le produit plus tard
+  
+  Le produit disparaît du catalogue public mais reste
+  visible dans l'interface admin.
+}

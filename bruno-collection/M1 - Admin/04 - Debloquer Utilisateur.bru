@@ -1,0 +1,31 @@
+meta {
+  name: 04 - Debloquer Utilisateur
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/api/admin/users/{{user_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "statut": "actif"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return updated status", function() {
+    expect(res.body.utilisateur.statut).to.equal("actif");
+  });
+}

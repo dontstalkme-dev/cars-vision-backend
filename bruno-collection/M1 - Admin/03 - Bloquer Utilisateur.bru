@@ -1,0 +1,43 @@
+meta {
+  name: 03 - Bloquer Utilisateur
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/api/admin/users/{{user_id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "statut": "bloque"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return updated status", function() {
+    expect(res.body.utilisateur.statut).to.equal("bloque");
+  });
+}
+
+docs {
+  # Bloquer un utilisateur (Admin)
+  
+  Remplacez {{user_id}} par l'ID de l'utilisateur à bloquer.
+  
+  Statuts possibles:
+  - "actif": utilisateur peut se connecter
+  - "bloque": utilisateur ne peut plus se connecter
+  
+  Note: Un admin ne peut pas être bloqué.
+}

@@ -1,0 +1,29 @@
+meta {
+  name: 02 - Details Rendezvous
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/admin/rendezvous/{{rendezvous_id}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be correct", function() {
+    expect(res.body.message).to.equal("Détails rendez-vous");
+  });
+  
+  test("Should have rendezvous data", function() {
+    expect(res.body.data).to.exist;
+  });
+}

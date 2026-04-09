@@ -1,0 +1,35 @@
+meta {
+  name: 04 - Completer Rendezvous
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/api/admin/rendezvous/{{rendezvous_id}}/completer
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "notes_mecanicien": "Révision complétée. Tout est OK."
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Rendez-vous complété");
+  });
+  
+  test("Statut should be TERMINE", function() {
+    expect(res.body.data.statut).to.equal("TERMINE");
+  });
+}

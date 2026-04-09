@@ -1,0 +1,47 @@
+meta {
+  name: 04 - Mettre a Jour Stock
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{base_url}}/api/admin/products/{{produit_id}}/stock
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "stock": 3
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Should return updated stock", function() {
+    expect(res.body.produit.stock).to.be.a("number");
+  });
+  
+  test("Should return alert if stock is low", function() {
+    if (res.body.produit.stock < 5) {
+      expect(res.body.alerte).to.exist;
+    }
+  });
+}
+
+docs {
+  # Mettre à jour le stock (Admin)
+  
+  Alertes automatiques:
+  - Stock < 5: "Stock critique"
+  - Stock = 0: "Produit épuisé"
+  
+  Le stock doit être >= 0.
+}

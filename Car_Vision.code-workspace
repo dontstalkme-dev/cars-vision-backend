@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Car_Vision_Frontend"
+		}
+	],
+	"settings": {
+		"kiroAgent.configureMCP": "Disabled",
+		"javascript.autoClosingTags": false
+	}
+}

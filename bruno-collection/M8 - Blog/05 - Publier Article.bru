@@ -1,0 +1,29 @@
+meta {
+  name: 05 - Publier Article
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{base_url}}/api/blog/admin/{{article_id}}/publier
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Article publié");
+  });
+  
+  test("Should be published", function() {
+    expect(res.body.data.est_publie).to.equal(true);
+  });
+}

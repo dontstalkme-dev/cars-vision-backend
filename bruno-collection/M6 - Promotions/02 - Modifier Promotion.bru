@@ -1,0 +1,36 @@
+meta {
+  name: 02 - Modifier Promotion
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{base_url}}/api/admin/promotions/{{produit_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+body:json {
+  {
+    "reduction_pourcentage": 30,
+    "date_fin_promotion": "2026-04-15T23:59:59Z"
+  }
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Message should be success", function() {
+    expect(res.body.message).to.equal("Promotion modifiée");
+  });
+  
+  test("Reduction should be updated", function() {
+    expect(res.body.data.reduction_pourcentage).to.equal(30);
+  });
+}
