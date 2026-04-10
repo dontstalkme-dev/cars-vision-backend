@@ -21,6 +21,8 @@ app.use(cors({
         if (corsOrigins.includes(origin)) return callback(null, true);
         // En dev, autoriser tout localhost / 127.0.0.1
         if (origin.match(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/)) return callback(null, true);
+        // Autoriser toutes les URLs de preview Vercel pour ce projet
+        if (origin.match(/^https:\/\/cars-vision-frontends.*\.vercel\.app$/)) return callback(null, true);
         return callback(new Error(`CORS bloqué pour l'origine: ${origin}`));
     },
     credentials: true,
