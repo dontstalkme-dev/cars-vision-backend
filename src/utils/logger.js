@@ -18,11 +18,8 @@ const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.Console(),
-        // En production, on peut ajouter un fichier
-        ...(process.env.NODE_ENV === 'production' ? [
-            new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-            new winston.transports.File({ filename: 'logs/combined.log' })
-        ] : [])
+        // Les fichiers de log ne sont pas disponibles sur Render (filesystem éphémère)
+        // Seule la console est utilisée en production
     ]
 });
 
